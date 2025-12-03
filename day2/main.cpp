@@ -62,5 +62,7 @@ int main()
         }
     }
 
+    file.close();
+
     std::cout << s;
 }

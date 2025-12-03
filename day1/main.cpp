@@ -69,6 +69,9 @@ int main()
             zeroCount++;
         }
     }
+
+    file.close();
+
     std::cout << zeroCount;
     return 0;
 }
