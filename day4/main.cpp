@@ -3,11 +3,11 @@
 #include <string>
 #include <sstream>
 #include <algorithm>
-
+#include <vector>
 int main()
 {
 
-    std::ifstream file("example.txt");
+    std::ifstream file("input.txt");
     std::string str;
     std::string file_contents;
 
@@ -48,57 +48,78 @@ int main()
     //     std::cout << '\n';
     // }
 
-    int cnt = 0;
+    int totalcnt = 0;
+    int cnt;
+    std::vector<std::pair<int, int>> pos;
+    int posIdx = 0;
 
-    for (int rows = 0; rows < size; rows++)
+    do
     {
-        for (int cols = 0; cols < size; cols++)
+        cnt = 0;
+        for (int rows = 0; rows < size; rows++)
         {
-            int rollpapercount = 0;
-
-            if (map[rows][cols] == '@')
+            for (int cols = 0; cols < size; cols++)
             {
-                // bottom
-                if (rows + 1 < size && map[rows + 1][cols] == '@')
-                    rollpapercount++;
+                int rollpapercount = 0;
 
-                // bottom left
-                if (rows + 1 < size && cols - 1 >= 0 && map[rows + 1][cols - 1] == '@')
-                    rollpapercount++;
-
-                // left
-                if (cols - 1 >= 0 && map[rows][cols - 1] == '@')
-                    rollpapercount++;
-
-                // top left
-                if (rows - 1 >= 0 && cols - 1 >= 0 && map[rows - 1][cols - 1] == '@')
-                    rollpapercount++;
-
-                // top
-                if (rows - 1 >= 0 && map[rows - 1][cols] == '@')
-                    rollpapercount++;
-
-                // top right
-                if (rows - 1 >= 0 && cols + 1 < size && map[rows - 1][cols + 1] == '@')
-                    rollpapercount++;
-
-                // right
-                if (cols + 1 < size && map[rows][cols + 1] == '@')
-                    rollpapercount++;
-
-                // bottom right
-                if (rows + 1 < size && cols + 1 < size && map[rows + 1][cols + 1] == '@')
-                    rollpapercount++;
-
-                if (rollpapercount < 4)
+                if (map[rows][cols] == '@')
                 {
-                    cnt++;
+                    // bottom
+                    if (rows + 1 < size && map[rows + 1][cols] == '@')
+                        rollpapercount++;
+
+                    // bottom left
+                    if (rows + 1 < size && cols - 1 >= 0 && map[rows + 1][cols - 1] == '@')
+                        rollpapercount++;
+
+                    // left
+                    if (cols - 1 >= 0 && map[rows][cols - 1] == '@')
+                        rollpapercount++;
+
+                    // top left
+                    if (rows - 1 >= 0 && cols - 1 >= 0 && map[rows - 1][cols - 1] == '@')
+                        rollpapercount++;
+
+                    // top
+                    if (rows - 1 >= 0 && map[rows - 1][cols] == '@')
+                        rollpapercount++;
+
+                    // top right
+                    if (rows - 1 >= 0 && cols + 1 < size && map[rows - 1][cols + 1] == '@')
+                        rollpapercount++;
+
+                    // right
+                    if (cols + 1 < size && map[rows][cols + 1] == '@')
+                        rollpapercount++;
+
+                    // bottom right
+                    if (rows + 1 < size && cols + 1 < size && map[rows + 1][cols + 1] == '@')
+                        rollpapercount++;
+
+                    if (rollpapercount < 4)
+                    {
+                        cnt++;
+                        pos.push_back({rows, cols});
+                    }
                 }
             }
         }
-    }
+        totalcnt += cnt;
 
-    std::cout << cnt;
+        // find marked positions and remove those
+
+        for (auto coord : pos)
+        {
+            map[coord.first][coord.second] = '.';
+        }
+
+        // reset vector and idx
+        idx = 0;
+        pos.clear();
+
+    } while (cnt > 0);
+
+    std::cout << totalcnt;
 
     file.close();
 }
