@@ -1,4 +1,4 @@
-// part1
+// part1 and part2
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -65,21 +65,29 @@ int main()
 
     std::sort(ranges.begin(), ranges.end());
 
-    int cnt = 0;
+    long long int cnt = 0;
 
-    for (auto i : ingredientIds)
+    long long tmp = ranges[0].first;
+    long long currEnd = ranges[0].second;
+
+    for (int i = 1; i < ranges.size(); i++)
     {
-        for (auto j : ranges)
+
+        if (ranges[i].first <= currEnd + 1)
         {
-            if (i < j.first)
-                break;
-            if (i >= j.first && i <= j.second)
-            {
-                cnt++;
-                break;
-            }
+            currEnd = std::max(currEnd, ranges[i].second);
+        }
+        else
+        {
+
+            cnt += currEnd - tmp + 1;
+
+            tmp = ranges[i].first;
+            currEnd = ranges[i].second;
         }
     }
+
+    cnt += currEnd - tmp + 1;
 
     std::cout << cnt;
 }
